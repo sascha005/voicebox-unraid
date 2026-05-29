@@ -1,0 +1,19 @@
+# Voicebox build artifacts
+*.tar
+*.img
+*.iso
+
+# Docker
+.dockerignore
+Dockerfile.dev
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

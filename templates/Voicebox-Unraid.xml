@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Container version="2">
+  <Name>Voicebox TTS Server</Name>
+  <Repository>ghcr.io/sascha005/voicebox-unraid:latest</Repository>
+  <Registry>https://ghcr.io</Registry>
+  <Network>bridge</Network>
+  <MyIP />
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/sascha005/voicebox-unraid</Support>
+  <Project>https://github.com/jamiepine/voicebox</Project>
+  <Overview>
+Local AI TTS server for Hermes Agent voice messages. Headless/API-only build.
+
+Features:
+- Voice Cloning (upload sample audio)
+- 7 TTS engines (Kokoro, LuxTTS, Qwen3-TTS, ...)
+- Fast CPU inference (no GPU needed)
+- REST API: POST /generate, GET /audio/{id}
+- 23 languages supported
+
+Use with Hermes: text → Voicebox API → WAV/MP3 → ffmpeg → OGG → Telegram Voice
+
+For private GHCR packages run docker login ghcr.io on Unraid first, or make the GHCR package public.
+  </Overview>
+  <Category>Productivity: Tools:</Category>
+  <WebUI>http://[IP]:[PORT:17493]</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/sascha005/voicebox-unraid/main/templates/Voicebox-Unraid.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/jamiepine/voicebox/main/.github/assets/icon-dark.webp</Icon>
+  <ExtraParams />
+  <PostArgs />
+  <CPUset />
+  <DateInstalled />
+  <DonateText />
+  <DonateLink />
+  <Requires />
+  <Config Name="Data Path" Target="/app/data" Default="/mnt/user/appdata/voicebox" Mode="rw" Description="Persistent voice profiles, generations, models, and cache." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/voicebox</Config>
+  <Config Name="API Port" Target="17493" Default="17493" Mode="tcp" Description="Voicebox REST API port. Change host port if 17493 is already in use." Type="Port" Display="always" Required="true" Mask="false">17493</Config>
+  <Config Name="Preload Models" Target="PRELOAD_MODELS" Default="true" Mode="" Description="Download Kokoro model on first start (~82MB). Speeds up first TTS generation." Type="Variable" Display="advanced" Required="false" Mask="false">true</Config>
+  <Config Name="Timezone" Target="TZ" Default="Europe/Berlin" Mode="" Description="Container timezone." Type="Variable" Display="advanced" Required="false" Mask="false">Europe/Berlin</Config>
+</Container>
