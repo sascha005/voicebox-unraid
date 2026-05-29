@@ -88,7 +88,9 @@ def generate(req: GenerateRequest, background: BackgroundTasks):
 
     try:
         # 1. synthesise with kokoro
-        samples, sample_rate = tts.generate(req.text, voice=req.voice, speed=req.speed)
+        samples, sample_rate = tts.create(
+            req.text, voice=req.voice, speed=req.speed, lang="de-de"
+        )
         sf.write(str(tmp_wav), samples, sample_rate)
 
         # 2. transcode if needed
