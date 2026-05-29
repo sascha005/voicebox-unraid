@@ -26,14 +26,17 @@ GEN_DIR.mkdir(parents=True, exist_ok=True)
 DEFAULT_VOICE = os.getenv("TTS_DEFAULT_VOICE", "af_bella")
 
 # ── Kokoro Setup ────────────────────────────────────────
-# kokoro-onnx will auto-download model/voices on first call (~100 MB)
 from kokoro_onnx import Kokoro
+
+MODEL_PATH = os.getenv("KOKORO_MODEL", "/app/models/kokoro-v1.0.onnx")
+VOICES_PATH = os.getenv("KOKORO_VOICES", "/app/models/voices-v1.0.bin")
+
 _tts = None
 
 def _get_tts():
     global _tts
     if _tts is None:
-        _tts = Kokoro()
+        _tts = Kokoro(MODEL_PATH, VOICES_PATH)
     return _tts
 
 # ── FastAPI ─────────────────────────────────────────────

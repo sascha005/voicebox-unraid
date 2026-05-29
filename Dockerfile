@@ -16,6 +16,13 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Download Kokoro model files (~300 MB) at build time for instant startup
+RUN mkdir -p /app/models && \
+    curl -L -o /app/models/kokoro-v1.0.onnx \
+        "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files/kokoro-v1.0.onnx" && \
+    curl -L -o /app/models/voices-v1.0.bin \
+        "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files/voices-v1.0.bin"
+
 # Copy server
 COPY main.py .
 
