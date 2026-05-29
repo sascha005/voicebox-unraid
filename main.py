@@ -76,8 +76,8 @@ def voices():
         ]
     }
 
-@app.post("/generate", response_model=GenerationResponse)
-def generate(req: GenerateRequest, background: BackgroundTasks):
+@app.post("/generate")
+def generate(req: GenerateRequest):
     if not req.text.strip():
         raise HTTPException(400, "text is empty")
 
@@ -87,34 +87,29 @@ def generate(req: GenerateRequest, background: BackgroundTasks):
     out_path = GEN_DIR / f"{gen_id}.{req.response_format}"
 
     try:
-        # 1. synthesise with kokoro
+        # synthesise
         samples, sample_rate = tts.create(
             req.text, voice=req.voice, speed=req.speed
         )
         sf.write(str(tmp_wav), samples, sample_rate)
 
-        # 2. transcode if needed
+        # transcode if needed
         if req.response_format == "wav":
             tmp_wav.rename(out_path)
         else:
             _transcode(tmp_wav, out_path, req.response_format)
             tmp_wav.unlink(missing_ok=True)
 
-        # 3. duration
-        info = sf.info(str(out_path))
-        duration = info.duration
-
     except Exception as exc:
         tmp_wav.unlink(missing_ok=True)
         out_path.unlink(missing_ok=True)
         raise HTTPException(500, f"generation failed: {exc}")
 
-    return GenerationResponse(
-        generation_id=gen_id,
-        audio_url=f"/audio/{gen_id}.{req.response_format}",
-        duration_seconds=duration,
-        voice=req.voice,
-        text=req.text,
+    # Return audio file directly
+    return FileResponse(
+        out_path,
+        media_type=_mime(req.response_format),
+        filename=f"voicebox_{gen_id}.{req.response_format}"
     )
 
 @app.get("/audio/{generation_id}")
