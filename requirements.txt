@@ -1,9 +1,0 @@
-# Slim TTS Server — Kokoro only
-# Replaces heavy voicebox backend (4GB torch) with lightweight ONNX runtime
-
-fastapi>=0.109.0
-uvicorn[standard]>=0.27.0
-pydantic>=2.5.0
-kokoro-onnx>=0.4.0
-soundfile>=0.12.0
-requests>=2.31.0
