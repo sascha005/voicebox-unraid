@@ -41,8 +41,6 @@ RUN groupadd -r voicebox && \
     && mkdir -p /app/data/generations /app/data/profiles /app/data/cache /app/data/models \
     && chown -R voicebox:voicebox /app/data
 
-USER voicebox
-
 EXPOSE 17493
 
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 --start-period=120s \
